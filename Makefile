@@ -53,3 +53,10 @@ precommit:
 	pre-commit install
 	pre-commit autoupdate
 	pre-commit run --all-files --show-diff-on-failure
+
+
+ft-das:
+	docker compose run --entrypoint 'bash tests/functional/run-ft-das.sh' --rm repository-service-tuf-worker
+
+ft-full-signed:
+	docker compose run --entrypoint 'bash tests/functional/run-ft-full-signed.sh' --rm repository-service-tuf-worker

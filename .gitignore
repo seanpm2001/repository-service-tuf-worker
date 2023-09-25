@@ -58,6 +58,9 @@ coverage.xml
 # repository-service-tuf-api stuff:
 data/
 data-test/
+rstuf-umbrella/
+metadata/
+payload.json
 
 # Scrapy stuff:
 .scrapy

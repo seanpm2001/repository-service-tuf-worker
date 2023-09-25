@@ -1,0 +1,63 @@
+name: FT Dev Local DAS
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_compose:
+        description: "Docker Compose File"
+        default: "docker-compose.yml"
+        type: string
+        required: False
+
+  workflow_call:
+    inputs:
+      docker_compose:
+        description: "Docker Compose File"
+        default: "docker-compose.yml"
+        type: string
+        required: False
+
+jobs:
+  functional-dev-local-das:
+    name: "FT DAS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RSTUF Worker Source Code
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+
+      - name: Checkout RSTUF Umbrella (FT)
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        with:
+            repository: repository-service-tuf/repository-service-tuf
+            path: rstuf-umbrella
+            ref: remove_ft_gha_workflows
+
+      - name: Deploy RSTUF using docker compose
+        run: |
+          docker compose -f ${{ inputs.worker_version }} up -d
+
+      - name: Run Functional Tests with Distributed Async Signing
+        run: |
+          make ft-das
+
+  functional-latest-local-das:
+    name: "FT Signed"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout RSTUF Worker Source Code
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+
+      - name: Checkout RSTUF Umbrella (FT)
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+        with:
+            repository: repository-service-tuf/repository-service-tuf
+            path: rstuf-umbrella
+            ref: remove_ft_gha_workflows
+
+      - name: Run RSTUF Worker from source code
+        run: |
+          docker compose -f ${{ inputs.worker_version }} up -d
+
+      - name: Run Functional Tests with Distributed Async Signing
+        run: |
+          make ft-das
