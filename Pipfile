@@ -42,6 +42,8 @@ bandit = "*"
 myst-parser = "*"
 awscli-local = "*"
 awscli = "*"
+pytest-xdist = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"
